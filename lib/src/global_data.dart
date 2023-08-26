@@ -19,6 +19,3 @@ final nodeGraphNotifierProvider =
     NotifierProvider<NodeGraphNotifier, IMap<String, Node>>(
   NodeGraphNotifier.new,
 );
-
-final nodeNotifierProvider =
-    NotifierProviderFamily<NodeNotifier, Node, String>(NodeNotifier.new);
