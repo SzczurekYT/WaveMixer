@@ -1,27 +1,26 @@
-import 'package:wave_mixer/src/graph/port.dart';
-
 class Link {
-  final Port sourcePort;
-  final Port targetPort;
+  final String sourceNode;
+  final String sourcePort;
+  final String targetNode;
+  final String targetPort;
 
-  Link(this.sourcePort, this.targetPort) {
-    sourcePort.links.add(this);
-    targetPort.links.add(this);
-  }
+  Link(this.sourceNode, this.sourcePort, this.targetNode, this.targetPort);
 
-  static Link? tryLink(Port sourcePort, Port targetPort) {
-    if (canLink(sourcePort, targetPort)) {
-      return Link(sourcePort, targetPort);
+  // static bool canLink(Port sourcePort, Port targetPort) {
+  //   return sourcePort.type.runtimeType == targetPort.type.runtimeType;
+  // }
+
+  @override
+  int get hashCode => Object.hash(sourceNode, sourcePort, targetNode, targetPort);
+
+  @override
+  bool operator ==(Object other) {
+    if (other is Link) {
+      sourceNode == other.sourceNode &&
+          sourcePort == other.sourcePort &&
+          targetNode == other.targetNode &&
+          targetPort == other.targetPort;
     }
-    return null;
-  }
-
-  static bool canLink(Port sourcePort, Port targetPort) {
-    return sourcePort.type.runtimeType == targetPort.type.runtimeType;
-  }
-
-  void unlink() {
-    sourcePort.links.remove(this);
-    targetPort.links.remove(this);
+    return false;
   }
 }
