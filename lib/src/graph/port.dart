@@ -18,7 +18,7 @@ class Port with _$Port {
     required String nodeId,
     required PortType type,
     required PortDirection direction,
-    required IList<Link> links,
+    required ISet<Link> links,
     required GlobalKey widgetKey,
   }) = _Port;
 
@@ -27,16 +27,28 @@ class Port with _$Port {
     required String nodeId,
     required PortType type,
     required PortDirection direction,
-    List<Link>? links,
+    Iterable<Link>? links,
   }) {
     return Port(
       id: id,
       nodeId: nodeId,
       type: type,
       direction: direction,
-      links: IList(links),
+      links: ISet(links),
       widgetKey: GlobalKey(),
     );
+  }
+
+  (Port self, Port other) createLink(Port other) {
+    var link = (direction == PortDirection.output)
+        ? Link(this, other)
+        : Link(other, this);
+
+    return (addLink(link), other.addLink(link));
+  }
+
+  Port addLink(Link link) {
+    return copyWith(links: links.add(link));
   }
 
   Port removeLink(Link link) {

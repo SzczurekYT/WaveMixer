@@ -56,7 +56,8 @@ class NodeConnectionsWidget extends ConsumerWidget {
     return SizedBox.expand(
       child: CanvasTouchDetector(
         gesturesToOverride: const [GestureType.onPanUpdate],
-        builder: (ctx) => CustomPaint(painter: LinkPainter(nodes, ctx, graph)),
+        builder: (ctx) =>
+            CustomPaint(painter: LinkPainter(nodes.values, ctx, graph)),
       ),
     );
   }

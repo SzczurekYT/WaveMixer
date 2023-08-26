@@ -20,7 +20,7 @@ mixin _$Port {
   String get nodeId => throw _privateConstructorUsedError;
   PortType get type => throw _privateConstructorUsedError;
   PortDirection get direction => throw _privateConstructorUsedError;
-  IList<Link> get links => throw _privateConstructorUsedError;
+  ISet<Link> get links => throw _privateConstructorUsedError;
   GlobalKey<State<StatefulWidget>> get widgetKey =>
       throw _privateConstructorUsedError;
 
@@ -38,7 +38,7 @@ abstract class $PortCopyWith<$Res> {
       String nodeId,
       PortType type,
       PortDirection direction,
-      IList<Link> links,
+      ISet<Link> links,
       GlobalKey<State<StatefulWidget>> widgetKey});
 }
 
@@ -82,7 +82,7 @@ class _$PortCopyWithImpl<$Res, $Val extends Port>
       links: null == links
           ? _value.links
           : links // ignore: cast_nullable_to_non_nullable
-              as IList<Link>,
+              as ISet<Link>,
       widgetKey: null == widgetKey
           ? _value.widgetKey
           : widgetKey // ignore: cast_nullable_to_non_nullable
@@ -102,7 +102,7 @@ abstract class _$$_PortCopyWith<$Res> implements $PortCopyWith<$Res> {
       String nodeId,
       PortType type,
       PortDirection direction,
-      IList<Link> links,
+      ISet<Link> links,
       GlobalKey<State<StatefulWidget>> widgetKey});
 }
 
@@ -142,7 +142,7 @@ class __$$_PortCopyWithImpl<$Res> extends _$PortCopyWithImpl<$Res, _$_Port>
       links: null == links
           ? _value.links
           : links // ignore: cast_nullable_to_non_nullable
-              as IList<Link>,
+              as ISet<Link>,
       widgetKey: null == widgetKey
           ? _value.widgetKey
           : widgetKey // ignore: cast_nullable_to_non_nullable
@@ -172,7 +172,7 @@ class _$_Port extends _Port {
   @override
   final PortDirection direction;
   @override
-  final IList<Link> links;
+  final ISet<Link> links;
   @override
   final GlobalKey<State<StatefulWidget>> widgetKey;
 
@@ -213,7 +213,7 @@ abstract class _Port extends Port {
       required final String nodeId,
       required final PortType type,
       required final PortDirection direction,
-      required final IList<Link> links,
+      required final ISet<Link> links,
       required final GlobalKey<State<StatefulWidget>> widgetKey}) = _$_Port;
   const _Port._() : super._();
 
@@ -226,7 +226,7 @@ abstract class _Port extends Port {
   @override
   PortDirection get direction;
   @override
-  IList<Link> get links;
+  ISet<Link> get links;
   @override
   GlobalKey<State<StatefulWidget>> get widgetKey;
   @override

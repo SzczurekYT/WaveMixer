@@ -20,13 +20,13 @@ class Node with _$Node {
   factory Node.create({
     required String name,
     required String id,
-    required List<Port> ports,
+    List<Port>? ports,
   }) {
     return Node(
       name: name,
       id: id,
       ports: IMap.fromIterable(
-        ports,
+        ports ?? [],
         keyMapper: (e) => e.id,
       ),
       position: Offset.zero,

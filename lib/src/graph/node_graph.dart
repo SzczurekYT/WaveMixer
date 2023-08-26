@@ -6,36 +6,48 @@ import 'package:wave_mixer/src/graph/node.dart';
 import 'package:wave_mixer/src/graph/port.dart';
 import 'package:wave_mixer/src/graph/port_types.dart';
 
-final IMap<String, Node> _defaultNodes = IMap({
-  "test_out": Node.create(id: "test_out", name: "Test Out", ports: [
-    Port.create(
-        id: "out_mono",
-        nodeId: "test_out",
-        type: AudioMono(),
-        direction: PortDirection.output,
-        links: [Link("test_out", "out_mono", "test_in", "in_mono")]),
+IMap<String, Node> getMockupNodes() {
+  Node outNode = Node.create(id: "test_out", name: "Test Out", ports: [
     Port.create(
       id: "out_stereo",
       nodeId: "test_out",
       type: AudioStereo(),
       direction: PortDirection.output,
     )
-  ]),
-  "test_in": Node.create(id: "test_in", name: "Test In", ports: [
-    Port.create(
-      id: "in_stereo",
-      nodeId: "test_in",
-      type: AudioStereo(),
-      direction: PortDirection.input,
-    ),
-    Port.create(
-        id: "in_mono",
+  ]);
+  Node inNode = Node.create(
+    id: "test_in",
+    name: "Test In",
+    ports: [
+      Port.create(
+        id: "in_stereo",
         nodeId: "test_in",
-        type: AudioMono(),
+        type: AudioStereo(),
         direction: PortDirection.input,
-        links: [Link("test_out", "out_mono", "test_in", "in_mono")])
-  ]),
-});
+      )
+    ],
+  );
+  Port outPort = Port.create(
+    id: "out_mono",
+    nodeId: "test_out",
+    type: AudioMono(),
+    direction: PortDirection.output,
+  );
+  Port inPort = Port.create(
+    id: "in_mono",
+    nodeId: "test_in",
+    type: AudioMono(),
+    direction: PortDirection.input,
+  );
+  (outPort, inPort) = outPort.createLink(inPort);
+  outNode = outNode.putPort(outPort);
+  inNode = inNode.putPort(inPort);
+
+  return IMap.fromIterable<String, Node, Node>([outNode, inNode],
+      keyMapper: (e) => e.id);
+}
+
+final IMap<String, Node> _defaultNodes = getMockupNodes();
 
 class NodeGraphNotifier extends Notifier<IMap<String, Node>> {
   @override
@@ -56,16 +68,16 @@ class NodeGraphNotifier extends Notifier<IMap<String, Node>> {
   }
 
   void unLink(Link link) {
-    Node? sourceNode = state[link.sourceNode];
-    Port? sourcePort = sourceNode?.ports[link.sourcePort];
-    if (sourceNode == null || sourcePort == null) {
+    Port sourcePort = link.sourcePort;
+    Node? sourceNode = state[sourcePort.nodeId];
+    if (sourceNode == null) {
       print("Src null");
       return;
     }
     putNode(sourceNode.putPort(sourcePort.removeLink(link)));
-    Node? targetNode = state[link.targetNode];
-    Port? targetPort = targetNode?.ports[link.targetPort];
-    if (targetNode == null || targetPort == null) {
+    Port targetPort = link.targetPort;
+    Node? targetNode = state[targetPort.nodeId];
+    if (targetNode == null) {
       print("Target null");
       return;
     }

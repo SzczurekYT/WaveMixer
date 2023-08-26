@@ -1,4 +1,3 @@
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:touchable/touchable.dart';
@@ -10,7 +9,7 @@ import 'package:wave_mixer/src/graph/port.dart';
 import 'package:wave_mixer/src/graph/port_types.dart';
 
 class LinkPainter extends CustomPainter {
-  final IMap<String, Node> nodes;
+  final Iterable<Node> nodes;
   final BuildContext ctx;
   final NodeGraphNotifier graph;
 
@@ -20,7 +19,7 @@ class LinkPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     var touchyCanvas = TouchyCanvas(ctx, canvas);
 
-    for (var node in nodes.values) {
+    for (var node in nodes) {
       // For each node
       _renderNode(node, touchyCanvas);
     }
@@ -59,10 +58,10 @@ class LinkPainter extends CustomPainter {
     Paint paint,
     TouchyCanvas canvas,
   ) {
-    Port? targetPort = nodes[link.targetNode]?.ports[link.targetPort];
+    Port targetPort = link.targetPort;
 
     RenderBox? endBox = targetPort //
-        ?.widgetKey
+        .widgetKey
         .currentContext
         ?.findRenderObject() as RenderBox?;
     Offset? end = endBox?.localToGlobal(Offset.zero);
