@@ -14,7 +14,8 @@ class NodeGraphWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var nodes = ref.watch(nodeGraphNotifierProvider);
+    var nodes =
+        ref.watch(nodeGraphNotifierProvider.select((value) => value.values));
     var graph = ref.read(nodeGraphNotifierProvider.notifier);
 
     return Container(
@@ -24,8 +25,8 @@ class NodeGraphWidget extends ConsumerWidget {
       child: DefaultTextStyle.merge(
         style: const TextStyle(color: Colors.white, fontSize: 18),
         child: Stack(children: [
-          NodeConnectionsWidget(nodes: nodes, graph: graph),
-          ...nodes.values.map((node) => drawNodeWidget(node, context)),
+          // NodeConnectionsWidget(nodes: nodes, graph: graph),
+          ...nodes.map((node) => drawNodeWidget(node, context)),
         ]),
       ),
     );
@@ -33,7 +34,7 @@ class NodeGraphWidget extends ConsumerWidget {
 
   Widget drawNodeWidget(Node node, BuildContext ctx) {
     return DraggableNodeWidget(
-      node: node,
+      nodeId: node.id,
       child: NodeWidget(
         node: node,
       ),

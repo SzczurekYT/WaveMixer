@@ -31,6 +31,10 @@ class Node with _$Node {
     );
   }
 
+  Node setPos(Offset pos) {
+    return copyWith(position: pos);
+  }
+
   Node putPort(Port port) {
     return copyWith(ports: ports.add(port.id, port));
   }

@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:wave_mixer/src/global_data.dart';
-import 'package:wave_mixer/src/graph/node.dart';
 
 class DraggableNodeWidget extends ConsumerWidget {
   const DraggableNodeWidget(
-      {required this.child, required this.node, super.key});
+      {required this.child, required this.nodeId, super.key});
 
   final Widget child;
-  final Node node;
+  final String nodeId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print("Build!");
     var centerOffset = MediaQuery.of(context).size.center(Offset.zero);
     var graph = ref.read(nodeGraphNotifierProvider.notifier);
+    Offset pos = ref.watch(nodePosProvider(nodeId));
+
     return Positioned(
-      left: centerOffset.dx + node.position.dx,
-      top: centerOffset.dy + node.position.dy,
+      left: centerOffset.dx + pos.dx,
+      top: centerOffset.dy + pos.dy,
       child: GestureDetector(
         onPanUpdate: (details) {
-          graph.updateNodePos(node, node.position + details.delta);
+          print("Update pos");
+          graph.updateNodePos(nodeId, pos + details.delta);
         },
         child: child,
       ),

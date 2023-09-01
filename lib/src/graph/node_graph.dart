@@ -63,8 +63,10 @@ class NodeGraphNotifier extends Notifier<IMap<String, Node>> {
     state = state.remove(node.id);
   }
 
-  void updateNodePos(Node node, Offset offset) {
-    putNode(node.copyWith(position: offset));
+  void updateNodePos(String nodeId, Offset newPos) {
+    var node = state[nodeId];
+    if (node == null) return;
+    putNode(node.setPos(newPos));
   }
 
   void unLink(Link link) {
